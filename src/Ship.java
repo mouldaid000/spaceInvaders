@@ -60,7 +60,11 @@ public class Ship extends Entity {
     @Override
     public void checkCollision() {
         for(int i = 0; i < getGame().getNextAlien(); i++){
-            getGame().removeAlien(i);
+            if(getGame().getAlien(i).collidesWithShip(getGame().getShip())){
+                getGame().removeAlien(i);
+            }
+
         }
+
     }
 }

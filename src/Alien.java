@@ -38,9 +38,9 @@ public class Alien extends Entity {
         }
         for(int i = 0; i < getGame().getNextAlien(); i++){
             for(int j = 0; j < getGame().getNextBullet(); j++){
-                if(getGame().getAlien(i).collides(getGame().getBullet(j))){
+                if(getGame().getAlien(i).collidesWithBullet(getGame().getBullet(j))){
+
                     getGame().getAlien(i).kill();
-                    getGame().getBullet(j).kill();
                 }
             }
         }

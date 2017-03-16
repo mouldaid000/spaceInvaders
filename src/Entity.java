@@ -27,8 +27,14 @@ public abstract class Entity {
     public abstract void move();
     public abstract void paint(Graphics g);
     public abstract void kill();
-    public boolean collides(Entity other){
-        return getBounds().intersects(other.getBounds());
+    public boolean collidesWithBullet(Bullet b){
+        return (getBounds().intersects(b.getBounds()));
+    }
+    public boolean collidesWithAlien(Alien a){
+        return getBounds().intersects(a.getBounds());
+    }
+    public boolean collidesWithShip(Ship s){
+        return getBounds().intersects(s.getBounds());
     }
     public void decrementIndex(){
         index--;

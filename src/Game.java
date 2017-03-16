@@ -150,7 +150,7 @@ public class Game extends JPanel implements ActionListener {
         ship.add(new Ship(Color.BLUE, getWidth()/2,  6,getHeight()-75, 42, 36, this, 0));
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 10; j++){
-                aliens.add(new Alien(Color.getHSBColor(0.0f, 1.0f, .58f),(j*50)+15,3,(i*50)+15, 20, 10, this, aliens.size()));
+                aliens.add(new Alien(Color.getHSBColor(0.0f, 1.0f, .58f),(j*75)+15,4,(i*50)+15, 30, 15, this, aliens.size()));
             }
         }
     }
@@ -162,11 +162,12 @@ public class Game extends JPanel implements ActionListener {
         for(Ship s : ship){
             s.checkCollision();
         }
-        for(Bullet b : bullets){
-            b.checkCollision();
+        for (Bullet b : bullets) {
+                b.checkCollision();
         }
-        for(Alien a : aliens){
-            a.checkCollision();
+
+        for (Alien a : aliens) {
+                a.checkCollision();
         }
     }
     public void paint(Graphics g) {
@@ -249,12 +250,16 @@ public class Game extends JPanel implements ActionListener {
     }
     public void removeBullet(int index){
         bullets.remove(index);
-        for(int i = index; i < bullets.size(); i++){
-            bullets.get(i).decrementIndex();
+        for (int i = index; i < bullets.size(); i++) {
+                bullets.get(i).decrementIndex();
         }
     }
     public int getNextBullet(){
         return bullets.size();
+    }
+
+    public Ship getShip(){
+        return ship.get(0);
     }
 
 
