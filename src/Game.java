@@ -150,7 +150,7 @@ public class Game extends JPanel implements ActionListener {
         ship.add(new Ship(Color.BLUE, getWidth()/2,  6,getHeight()-75, 42, 36, this, 0));
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 10; j++){
-                aliens.add(new Alien(Color.getHSBColor(0.0f, 1.0f, .58f),(j*75)+15,4,(i*50)+15, 30, 15, this, aliens.size()));
+                aliens.add(new Alien(Color.getHSBColor(0.0f, 1.0f, .58f),(j*75)+15,4,(i*50)+15, 25, 15, this, aliens.size()));
             }
         }
     }
@@ -207,6 +207,15 @@ public class Game extends JPanel implements ActionListener {
             for(Bullet b : bullets){
                 b.paint(g);
             }
+        }
+        if (Stats.isPause()) {
+            boolean reverse = false;
+            int counter = 0;
+            if(reverse && counter > 0){
+
+            }
+
+            printSimpleString("PAUSED", getWidth(), 0, getHeight()/2,g);
         }
     }
     public int randomX(){
