@@ -34,7 +34,8 @@ public class Stats {
         }
     }
     public static void startPlay(){
-        if(isMenu() ^ isEnd()){
+
+        if(isMenu() || isEnd()){
             menu = false;
             play = true;
             end = false;

@@ -28,9 +28,21 @@ public class Alien extends Entity {
 
     @Override
     public void checkCollision() {
-        if (getX() + this.getWidth() > getGame().getWidth() || getX() < 0) {
+        if (getX() + getWidth() > getGame().getWidth()) {
             setDx(getDx() * -1);
             setY(getY()+25);
+        }
+        if(getX() < 0){
+            setDx(getDx() *-1);
+            setY(getY()+25);
+        }
+        for(int i = 0; i < getGame().getNextAlien(); i++){
+            for(int j = 0; j < getGame().getNextBullet(); j++){
+                if(getGame().getAlien(i).collides(getGame().getBullet(j))){
+                    getGame().getAlien(i).kill();
+                    getGame().getBullet(j).kill();
+                }
+            }
         }
     }
 }

@@ -36,7 +36,7 @@ public class Ship extends Entity {
         if(getGame().isClick() && !bulletFired){
             bulletFired = true;
 
-            getGame().addBullet(new Bullet(Color.yellow, getX() + (getWidth()) / 2, 0,getY() + (getHeight()) / 2, 10, 10, getGame(), getGame().getNextBullet()));
+            getGame().addBullet(new Bullet(Color.yellow, getX() + (getWidth()) / 2, 4,getY() + (getHeight()) / 2, 10, 10, getGame(), getGame().getNextBullet()));
 
 
         }

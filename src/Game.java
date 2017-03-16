@@ -131,6 +131,9 @@ public class Game extends JPanel implements ActionListener {
             for(int i = 0; i < aliens.size(); i++){
                 aliens.get(i).move();
             }
+            for(int i = 0; i < bullets.size(); i++){
+                bullets.get(i).move();
+            }
             //if(Stats.isEnd()){
                 //if(isSpace()){
                     //resetGame();
@@ -190,6 +193,7 @@ public class Game extends JPanel implements ActionListener {
             printSimpleString("Press [SPACE] to Play", getWidth(), +1, (getHeight()/2) + 151, g);
             g.setColor(Color.getHSBColor(.79f, 1.0f, .65f));
             printSimpleString("Press [SPACE] to Play", getWidth(), 0, (getHeight()/2) + 150, g);
+            g.setColor(Color.WHITE);
             for(int i = 0; i <= 10; i++){
                 g.fillRect(randomX(), randomY(), 3, 3);
             }
@@ -199,6 +203,9 @@ public class Game extends JPanel implements ActionListener {
                 a.paint(g);
             }
             ship.get(0).paint(g);
+            for(Bullet b : bullets){
+                b.paint(g);
+            }
         }
     }
     public int randomX(){
@@ -234,8 +241,8 @@ public class Game extends JPanel implements ActionListener {
     }
 
     //Bullet methods
-    public void addBullet(Bullet b){
-        bullets.add(b);
+    public void addBullet(Bullet b) {
+            bullets.add(b);
     }
     public Bullet getBullet(int index){
         return bullets.get(index);
@@ -262,12 +269,6 @@ public class Game extends JPanel implements ActionListener {
     }
     public boolean isD(){
         return dPressed;
-    }
-    public boolean isSpace(){
-        return spacePressed;
-    }
-    public boolean isP(){
-        return pPressed;
     }
     public boolean isClick(){
         return mouse1Pressed;
