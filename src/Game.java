@@ -18,6 +18,8 @@ public class Game extends JPanel implements ActionListener {
     ArrayList<Entity> ship;
     ArrayList<Entity> bullets;
 
+    int alienCount;
+
     public static void main(String[] args) {
         Game game = new Game();
         game.init();
@@ -127,6 +129,9 @@ public class Game extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (Stats.isPlay()) {
             collisions();
+            if(alienCount == 0){
+                Stats.endGame();
+            }
             ship.get(0).move();
             for(int i = 0; i < aliens.size(); i++){
                 aliens.get(i).move();
@@ -151,6 +156,7 @@ public class Game extends JPanel implements ActionListener {
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 10; j++){
                 aliens.add(new Alien(Color.getHSBColor(0.0f, 1.0f, .58f),(j*75)+15,4,(i*50)+15, 25, 15, this, aliens.size()));
+                alienCount = 60;
             }
         }
     }
@@ -166,6 +172,7 @@ public class Game extends JPanel implements ActionListener {
                         bullets.remove(j);
                         aliens.remove(i);
                         Stats.addScore();
+                        alienCount--;
                     }
                 }
             }

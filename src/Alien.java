@@ -30,8 +30,6 @@ public class Alien extends Entity {
     }
 
     @Override
-    public void kill() {
-        getGame().removeAlien(getIndex());
-    }
+    public void kill() {}
 
 }
