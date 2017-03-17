@@ -18,10 +18,10 @@ public class Stats {
         return end;
     }
     public static void endGame(){
+        end = true;
         menu = false;
         play = false;
         pause = false;
-        end = true;
     }
     public static void togglePause(){
         if(isPlay()){

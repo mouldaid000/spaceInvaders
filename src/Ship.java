@@ -1,17 +1,16 @@
 import java.awt.*;
 
-import static java.awt.Color.getHSBColor;
-
 /**
  * Created by Aidan Moulder on 3/15/2017.
  */
 public class Ship extends Entity {
     boolean visible = true, bulletFired = false;
+    int bulletTimer;
 
     public Ship(Color color, int x, int dx, int y, int width, int height, Game game, int index) {
 
         super(color, x, dx ,y, width, height, game, index);
-
+        bulletTimer = 12;
     }
 
     @Override
@@ -33,10 +32,10 @@ public class Ship extends Entity {
             else setX(getX()+getDx());
         }
 
-        if(getGame().isClick() && !bulletFired){
-            bulletFired = true;
+        if(getGame().isClick() && !bulletFired && bulletTimer == 0){
 
-            getGame().addBullet(new Bullet(Color.yellow, getX() + (getWidth()) / 2, 4,getY() + (getHeight()) / 2, 10, 10, getGame(), getGame().getNextBullet()));
+            bulletFired = true;
+            getGame().addBullet(new Bullet(Color.yellow, getX() + (getWidth()) / 2, 7,getY() + (getHeight()) / 2, 10, 10, getGame(), getGame().getNextBullet()));
 
 
         }
@@ -44,6 +43,11 @@ public class Ship extends Entity {
         if(!getGame().isClick()) {
             bulletFired = false;
         }
+        bulletTimer--;
+        if(bulletTimer <0){
+            bulletTimer = 12;
+        }
+
     }
 
     @Override
@@ -57,14 +61,4 @@ public class Ship extends Entity {
         Stats.endGame();
     }
 
-    @Override
-    public void checkCollision() {
-        for(int i = 0; i < getGame().getNextAlien(); i++){
-            if(getGame().getAlien(i).collidesWithShip(getGame().getShip())){
-                getGame().removeAlien(i);
-            }
-
-        }
-
-    }
 }

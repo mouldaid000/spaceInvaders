@@ -14,9 +14,9 @@ public class Game extends JPanel implements ActionListener {
 
     boolean aPressed, dPressed, spacePressed, pPressed, mouse1Pressed;
 
-    ArrayList<Alien> aliens;
-    ArrayList<Ship> ship;
-    ArrayList<Bullet> bullets;
+    ArrayList<Entity> aliens;
+    ArrayList<Entity> ship;
+    ArrayList<Entity> bullets;
 
     public static void main(String[] args) {
         Game game = new Game();
@@ -134,19 +134,19 @@ public class Game extends JPanel implements ActionListener {
             for(int i = 0; i < bullets.size(); i++){
                 bullets.get(i).move();
             }
-            //if(Stats.isEnd()){
-                //if(isSpace()){
-                    //resetGame();
-                //}
-           //}
+            if(Stats.isEnd()){
+                if(spacePressed){
+                    System.exit(0);
+                }
+           }
         }
 
         repaint();
     }
     public void init(){
-        aliens = new ArrayList<Alien>();
-        ship = new ArrayList<Ship>();
-        bullets = new ArrayList<Bullet>();
+        aliens = new ArrayList<Entity>();
+        ship = new ArrayList<Entity>();
+        bullets = new ArrayList<Entity>();
         ship.add(new Ship(Color.BLUE, getWidth()/2,  6,getHeight()-75, 42, 36, this, 0));
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 10; j++){
@@ -159,15 +159,23 @@ public class Game extends JPanel implements ActionListener {
         timer.start();
     }
     public void collisions(){
-        for(Ship s : ship){
-            s.checkCollision();
+        for(int i = 0; i < aliens.size(); i++){
+            for(int j = 0; j < bullets.size(); j++){
+                if(aliens.get(i).collides(bullets.get(j))){
+                    if(bullets.get(j) instanceof Bullet) {
+                        bullets.remove(j);
+                        aliens.remove(i);
+                        Stats.addScore();
+                    }
+                }
+            }
         }
-        for (Bullet b : bullets) {
-                b.checkCollision();
-        }
-
-        for (Alien a : aliens) {
-                a.checkCollision();
+        for(int i = 0; i < aliens.size(); i++){
+            if(aliens.get(i).collides(ship.get(0))){
+                if(ship.get(0) instanceof Ship){
+                    Stats.endGame();
+                }
+            }
         }
     }
     public void paint(Graphics g) {
@@ -188,7 +196,6 @@ public class Game extends JPanel implements ActionListener {
             g.setColor(Color.getHSBColor(.79f, 1.0f, .65f));
             printSimpleString("Invaders", getWidth(), 0,(getHeight()/2)+60, g);
             g.setColor(Color.WHITE);
-
             g.setFont(new Font("segoe ui", Font.ITALIC, 54));
             printSimpleString("Press [SPACE] to Play", getWidth(), -1, (getHeight()/2) + 149, g);
             printSimpleString("Press [SPACE] to Play", getWidth(), +1, (getHeight()/2) + 151, g);
@@ -200,24 +207,33 @@ public class Game extends JPanel implements ActionListener {
             }
         }
         if(Stats.isPlay()){
-            for(Alien a : aliens){
-                a.paint(g);
+            for(Entity alien : aliens){
+                alien.paint(g);
             }
             ship.get(0).paint(g);
-            for(Bullet b : bullets){
-                b.paint(g);
+            for(Entity bullet : bullets){
+                bullet.paint(g);
             }
+            g.setColor(new Color(8,160,255));
+            g.setFont(new Font("segoe ui", Font.PLAIN, 24));
+            printSimpleString("Score:"+Stats.score, getWidth(), -(1024/2)+150,getHeight()-25,g);
         }
         if (Stats.isPause()) {
-            boolean reverse = false;
-            int counter = 0;
-            if(reverse && counter > 0){
 
-            }
-
+            g.setFont(new Font("segoe ui", Font.BOLD, 72));
             printSimpleString("PAUSED", getWidth(), 0, getHeight()/2,g);
+
+        }
+        if(Stats.isEnd()){
+            g.setColor(new Color(8, 160,255));
+            g.setFont(new Font("seqoe ui", Font.PLAIN, 64));
+            printSimpleString("Game Over", getWidth(), 0, (getHeight()/2)-25, g);
+            g.setFont(new Font("segoe ui", Font.PLAIN, 48));
+            printSimpleString("You scored: " + Stats.score, getWidth(), 0, (getHeight()/2)+25, g);
+            printSimpleString("Press [SPACE] to End", getWidth(), 0, getHeight() - 25,g);
         }
     }
+    //Separate methods for making my title screen look sexy
     public int randomX(){
         int max = 1023, min = 1;
         Random rand = new Random();
@@ -233,51 +249,29 @@ public class Game extends JPanel implements ActionListener {
     }
 
     //Alien methods
-
-    public void addAlien(Alien a){
-        aliens.add(a);
-    }
-    public Alien getAlien(int index){
-        return aliens.get(index);
-    }
     public void removeAlien(int index){
         aliens.remove(index);
-        for(int i = index; i < aliens.size(); i++){
-            aliens.get(i).decrementIndex();
-        }
-    }
-    public int getNextAlien(){
-        return aliens.size();
     }
 
     //Bullet methods
     public void addBullet(Bullet b) {
             bullets.add(b);
     }
-    public Bullet getBullet(int index){
-        return bullets.get(index);
-    }
     public void removeBullet(int index){
         bullets.remove(index);
-        for (int i = index; i < bullets.size(); i++) {
-                bullets.get(i).decrementIndex();
-        }
     }
     public int getNextBullet(){
         return bullets.size();
     }
 
-    public Ship getShip(){
-        return ship.get(0);
-    }
-
-
+    //String printing
     private void printSimpleString(String s, int width, int XPos, int YPos, Graphics g2d) {
         int stringLen = (int)g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();
         int start = width/2 - stringLen/2;
         g2d.drawString(s, start + XPos, YPos);
     }
 
+    //Boolean getters
     public boolean isA(){
         return aPressed;
     }
